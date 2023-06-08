@@ -213,7 +213,7 @@ data "terraform_remote_state" "lambda" {
 }
 
 module "auto_destroy" {
-  source = "./modules/auto_destroy"
+  source = "git::https://github.com/Jonny1987/terraform-auto-destroy.git//auto_destroy"
   lambda_function_name = data.terraform_remote_state.lambda.outputs.lambda_function_name
   lb_id = aws_instance.load_balancer.id
   lb_max_idle_time_minutes = 5

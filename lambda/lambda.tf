@@ -1,8 +1,8 @@
 resource "terraform_data" "make_lambda_payload" {
   # Creates a zip of the root and proxies directory without any .terraform files
   provisioner "local-exec" {
-    command     = "zip -x \"main/.*\" -x \"main/.*/.*\" -r lambda_function_payload.zip main/ && zip -jr lambda_function_payload.zip lambda/terraform_destroy_lambda.py"
-    working_dir = "../"
+    command     = "curl https://github.com/Jonny1987/terraform-auto-destroy/blob/master/auto_destroy/terraform_destroy_lambda.py -o terraform_destroy_lambda.py && zip -x \"main/.*\" -x \"main/.*/.*\" -r lambda_function_payload.zip main/ && zip -jr lambda_function_payload.zip terraform_destroy_lambda.py"
+    working_dir = dirname(path.root)
   }
 }
 

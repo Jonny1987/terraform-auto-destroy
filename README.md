@@ -8,17 +8,16 @@ There are two separate modules:
 
 
 # Structure
-/main
+Create the following terraform projects in the same directory for the auto_destroy to work:
+
+main/
   The terraform project which contains your infrastructure with load balancer which is being monitored. This load balancer must have resource name of "load_balancer".
   This project also loads the "auto-destroy" terraform module located at
 
-/destroy_lambda - terraform project which just loads the lambda function to destroy the infrastructure located at 
+destroy_lambda/ - terraform project which just loads the lambda function to destroy the infrastructure located at 
 
 
 # Variables of modules
-lambda:
-  lambda_function_name - The name of the lambda function. Defaults to "terraform_destroy_lambda"
-
 auto_destroy:
   lb_max_idle_time_minutes - The number of minutes that the load balancer needs to be idle for before the lambda function is called
 
@@ -26,10 +25,10 @@ auto_destroy:
 ### To start
 
 1) download the latest terraform binary for the lambda layer payload:
-   `cd lambda; curl "https://releases.hashicorp.com/terraform/$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')/terraform_$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')_linux_amd64.zip" -o terraform.zip`
+   `cd destroy_lambda; curl "https://releases.hashicorp.com/terraform/$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')/terraform_$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')_linux_amd64.zip" -o terraform.zip`
 
 2) create the lambda function:
-   `cd lambda; terraform apply`
+   `cd destroy_lambda; terraform apply`
 
 3) create the infrastructure:
    `cd ../main; terraform apply`

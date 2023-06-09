@@ -1,0 +1,8 @@
+# Saved as .txt file so won't be read by terraform as part of the module. Will be downloaded and changed to .tf in setup.sh
+resource "terraform_data" "make_lambda_payload" {
+  # Creates a zip of the root and proxies directory without any .terraform files
+  provisioner "local-exec" {
+    command     = "zip -x \"../main/.*\" -x \"../main/.*/.*\" -r lambda_function_payload.zip ../main/ && zip -jr lambda_function_payload.zip terraform_destroy_lambda.py"
+  }
+}
+

@@ -5,10 +5,8 @@ resource "terraform_data" "make_lambda_payload" {
   }
 }
 
-resource "aws_lambda_layer_version" "terraform_layer" {
-  filename   = "terraform.zip"
-  layer_name = "terraform_layer"
-  skip_destroy = true
+data "aws_lambda_layer_version" "terraform_git" {
+  layer_name = "terraform-git-layer"
 }
 
 resource "aws_lambda_function" "terraform_destroy_lambda" {
@@ -20,7 +18,7 @@ resource "aws_lambda_function" "terraform_destroy_lambda" {
   timeout       = "300"
   memory_size   = "1024"
 
-  layers = [aws_lambda_layer_version.terraform_layer.arn, "arn:aws:lambda:ap-northeast-1:553035198032:layer:git-lambda2:8"]
+  layers = [data.aws_lambda_layer_version.terraform_git.arn]
 
   environment {
     variables = {
